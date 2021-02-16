@@ -1,6 +1,6 @@
 {
   "name": "react-native-rating-component",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": false,
   "description": "A simple and customizable React Native Rating Component.",
   "repository": {
@@ -14,10 +14,6 @@
     "test": "jest",
     "lint": "tsc --noEmit && eslint --ext .ts,.tsx ./",
     "prettier:write": "npx prettier --write **/*.{js,jsx,ts,tsx,json} && npx prettier --write *.{js,jsx,ts,tsx,json}"
-  },
-  "dependencies": {
-    "react-native-svg-transformer": "^0.14.3",
-    "react-native-svg": "^12.1.0"
   },
   "peerDependencies": {
     "react": "*",
@@ -46,7 +42,6 @@
     "jest": "^25.1.0",
     "metro-react-native-babel-preset": "^0.59.0",
     "prettier": "^2.2.1",
-    "react-native-svg-transformer": "^0.14.3",
     "react-test-renderer": "16.13.1",
     "typescript": "^3.8.3"
   },

@@ -5,9 +5,11 @@ import {
   Animated,
   TouchableWithoutFeedback,
   View,
+  Image,
 } from 'react-native';
 import {styles} from './styles';
-import Star from './assets/star.svg';
+
+const Star = require('./assets/star.png');
 
 interface Props {
   /** Custom height of each star */
@@ -109,9 +111,14 @@ const Rating: FC<Props> = ({
             })}
           </View>
         ) : (
-          <Star
-            style={[index < stars.length - 1 && {marginRight: distance}]}
-            fill={rate >= star ? fillColorActive : fillColorInactive}
+          <Image
+            resizeMode="contain"
+            resizeMethod="resize"
+            source={Star}
+            style={[
+              index < stars.length - 1 && {marginRight: distance},
+              {tintColor: rate >= star ? fillColorActive : fillColorInactive},
+            ]}
             width={customWidth}
             height={customHeight}
           />
