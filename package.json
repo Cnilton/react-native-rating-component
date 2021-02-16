@@ -1,7 +1,12 @@
 {
   "name": "react-native-rating-component",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": false,
+  "description": "A simple and customizable React Native Rating Component.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cnilton/react-native-rating-component.git"
+  },
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -11,6 +16,7 @@
     "prettier:write": "npx prettier --write **/*.{js,jsx,ts,tsx,json} && npx prettier --write *.{js,jsx,ts,tsx,json}"
   },
   "dependencies": {
+    "react-native-svg-transformer": "^0.14.3",
     "react-native-svg": "^12.1.0"
   },
   "peerDependencies": {
@@ -44,6 +50,10 @@
     "react-test-renderer": "16.13.1",
     "typescript": "^3.8.3"
   },
+  "bugs": {
+    "url": "https://github.com/Cnilton/react-native-rating-component/issues"
+  },
+  "homepage": "https://github.com/Cnilton/react-native-rating-component#readme",
   "jest": {
     "preset": "react-native",
     "moduleFileExtensions": [
