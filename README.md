@@ -27,7 +27,7 @@ yarn add react-native-rating-component
 ```javascript
 //...
 import React, { useState } from 'react';
-import Rating from 'react-native-rating-component';
+import {Rating} from 'react-native-rating-component';
 
 const app: React.FC = () => {
   const [rate, setRate] = useState(3);
@@ -49,7 +49,7 @@ export default app;
 ```javascript
 import React, {useState, useRef} from 'react';
 import {View} from 'react-native';
-import Rating from 'react-native-rating-component';
+import {Rating} from 'react-native-rating-component';
 
 /** Make sure to use fill prop to apply the color of active/inactive rating */
 const YourComponent = ({fill}) => {
@@ -81,7 +81,7 @@ export default App;
 ```javascript
 //...
 import React, { useState, useRef } from 'react';
-import Rating from 'react-native-rating-component';
+import {Rating} from 'react-native-rating-component';
 
 const app: React.FC = () => {
   const [rate, setRate] = useState(3);
