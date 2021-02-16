@@ -112,15 +112,18 @@ const Rating: FC<Props> = ({
           </View>
         ) : (
           <Image
-            resizeMode="contain"
             resizeMethod="resize"
             source={Star}
             style={[
               index < stars.length - 1 && {marginRight: distance},
-              {tintColor: rate >= star ? fillColorActive : fillColorInactive},
+              // eslint-disable-next-line react-native/no-inline-styles
+              {
+                tintColor: rate >= star ? fillColorActive : fillColorInactive,
+                height: customHeight,
+                width: customWidth,
+                resizeMode: 'contain',
+              },
             ]}
-            width={customWidth}
-            height={customHeight}
           />
         )}
       </TouchableWithoutFeedback>
