@@ -186,10 +186,10 @@ const Rating: FC<Props> = ({
   }
 
   return (
-    // eslint-disable-next-line react/jsx-props-no-spreading
     <Animated.View
-      style={[styles.container, {backgroundColor: 'red'}]}
+      style={[styles.container]}
       onLayout={(evt: any) => handleLayout(evt)}
+      // eslint-disable-next-line react/jsx-props-no-spreading
       {...panResponder.panHandlers}>
       {renderStars()}
     </Animated.View>
