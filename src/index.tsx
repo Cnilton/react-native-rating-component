@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   View,
   Image,
+  LayoutChangeEvent,
 } from 'react-native';
 import {styles} from './styles';
 
@@ -48,27 +49,73 @@ const Rating: FC<Props> = ({
 }: Props) => {
   const isFirstRun = useRef(true);
   const [rate, setRate] = useState(initialValue);
+  const [componentWidth, setComponentWidth] = useState(0);
   const [previousRate, setPreviousRate] = useState(initialValue);
 
   const panResponder: PanResponderInstance = PanResponder.create({
     // Ask to be the responder:
-    onStartShouldSetPanResponder: () => false,
-    onStartShouldSetPanResponderCapture: () => false,
+    onStartShouldSetPanResponder: () => true,
+    onStartShouldSetPanResponderCapture: () => true,
     onMoveShouldSetPanResponder: () => true,
     onMoveShouldSetPanResponderCapture: () => true,
-    onPanResponderMove: (_, {dx}) => {
+    onPanResponderStart: ({nativeEvent}) => {
+      const location = nativeEvent.locationX;
+      const points = componentWidth / starCount;
+      const newValue = location / points;
+
+      if (location > componentWidth) {
+        return;
+      }
+      if (newValue <= minimumStars) {
+        if (rate !== minimumStars) {
+          setRate(minimumStars);
+        }
+        return;
+      }
+      setPreviousRate(rate);
+      setRate(
+        newValue > Math.round(newValue)
+          ? Math.round(newValue) + 1
+          : Math.round(newValue),
+      );
+    },
+    onPanResponderMove: ({nativeEvent}) => {
       // The most recent move distance is gestureState.move{X,Y}
       // The accumulated gesture distance since becoming responder is
       // gestureState.d{x,y}
+      const location = nativeEvent.locationX;
+      const points = componentWidth / starCount;
+      const newValue = location / points;
 
-      if (Math.fround(Math.abs(dx) / (customWidth + distance)) > 0) {
-        const newValue = Math.fround(dx / (customWidth + distance)) + rate;
-        if (newValue <= minimumStars || Math.floor(newValue) > starCount) {
-          return;
-        }
-        setPreviousRate(rate);
-        setRate(newValue);
+      if (location > componentWidth) {
+        return;
       }
+      if (newValue <= minimumStars) {
+        if (rate !== minimumStars) {
+          setRate(minimumStars);
+        }
+        return;
+      }
+      setPreviousRate(rate);
+      setRate(
+        newValue > Math.round(newValue)
+          ? Math.round(newValue) + 1
+          : Math.round(newValue),
+      );
+
+      // if(moveX/starCount){
+      // setPreviousRate(rate);
+      // setRate(componentWidth*10/moveX);
+      // }
+
+      // if (Math.fround(Math.abs(dx) / (customWidth + distance)) > 0) {
+      //   const newValue = Math.fround(dx / (customWidth + distance)) + rate;
+      //   if (newValue <= minimumStars || Math.floor(newValue) > starCount) {
+      //     return;
+      //   }
+      //   // setPreviousRate(rate);
+      //   // setRate(newValue);
+      // }
     },
   });
 
@@ -93,46 +140,57 @@ const Rating: FC<Props> = ({
     }
 
     return stars.map((star, index) => (
-      <TouchableWithoutFeedback
-        delayLongPress={1}
+      <View
+        pointerEvents="none"
+        // delayLongPress={1}
         key={String(star)}
-        onLongPress={() => {
-          setPreviousRate(rate);
-          setRate(star);
-        }}
-        onPress={() => {
-          setPreviousRate(rate);
-          setRate(star);
-        }}>
-        {CustomRatingComponent ? (
-          <View style={[index < stars.length - 1 && {marginRight: distance}]}>
-            {cloneElement(CustomRatingComponent, {
-              fill: rate >= star ? fillColorActive : fillColorInactive,
-            })}
-          </View>
-        ) : (
-          <Image
-            resizeMethod="resize"
-            source={Star}
-            style={[
-              index < stars.length - 1 && {marginRight: distance},
-              // eslint-disable-next-line react-native/no-inline-styles
-              {
-                tintColor: rate >= star ? fillColorActive : fillColorInactive,
-                height: customHeight,
-                width: customWidth,
-                resizeMode: 'contain',
-              },
-            ]}
-          />
-        )}
-      </TouchableWithoutFeedback>
+
+        // onLongPress={() => {
+        //   setPreviousRate(rate);
+        //   setRate(star);
+        // }}
+        // onPress={() => {
+        //   setPreviousRate(rate);
+        //   setRate(star);
+        // }}
+      >
+        <View style={index < starCount - 1 && {paddingRight: distance}}>
+          {CustomRatingComponent ? (
+            <View style={[index < stars.length - 1 && {marginRight: distance}]}>
+              {cloneElement(CustomRatingComponent, {
+                fill: rate >= star ? fillColorActive : fillColorInactive,
+              })}
+            </View>
+          ) : (
+            <Image
+              resizeMethod="resize"
+              source={Star}
+              style={[
+                // eslint-disable-next-line react-native/no-inline-styles
+                {
+                  tintColor: rate >= star ? fillColorActive : fillColorInactive,
+                  height: customHeight,
+                  width: customWidth,
+                  resizeMode: 'contain',
+                },
+              ]}
+            />
+          )}
+        </View>
+      </View>
     ));
   };
 
+  function handleLayout(evt: LayoutChangeEvent) {
+    setComponentWidth(evt.nativeEvent.layout.width);
+  }
+
   return (
     // eslint-disable-next-line react/jsx-props-no-spreading
-    <Animated.View style={styles.container} {...panResponder.panHandlers}>
+    <Animated.View
+      style={[styles.container, {backgroundColor: 'red'}]}
+      onLayout={(evt: any) => handleLayout(evt)}
+      {...panResponder.panHandlers}>
       {renderStars()}
     </Animated.View>
   );
